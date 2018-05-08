@@ -57,7 +57,7 @@
             <div class="btn fl">
             	<button class="box"></button>
                 <button class="box" @click=resetInput>清空</button>
-                <button class="box" @click=getAll :disabled=disabled>确定</button>
+                <button class="box" @click=getAll :disabled=disabled>ALL</button>
                 <!-- <button class="box" @click=listAll :disabled=disabled>计算</button> -->
             </div>
         </div>
@@ -273,7 +273,7 @@
             	var res = [];
 		var f = this.f;
             	for (var i = 0; i < f.length; i++) {
-            		res = res.concat([{title:f[i].type + ' '+ f[i].text}],this.calRes(f[i].text));
+            		res = res.concat([{title:f[i].type + ' '+ f[i].text}],this.calRes(f[i].type));
             	}
             	this.res = res;
             }
