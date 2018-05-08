@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>仙人微彩</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <style type="text/css">
+    body { min-width: 400px; }
+    body, div, li, ul, input { margin: 0; padding: 0; box-sizing: border-box; }
+    ul, li { list-style: none; }
+    .fl { float: left; }
+    .fr { float: right; }
+    .box { border: 1px solid #000; float: left; height: 50px; line-height: 50px; }
+    .clearfix:after, .clearfix:before { content: ''; height: 0; width: 100%; display: block; clear: both; overflow: auto; }
+    .input input { display: block; width: 100%; height: 100%; text-align: center; font-size: 16px; }
+    .app { width: 500px; margin: 0 auto; }
+    @media (max-width:768px) {
+        .app { width: 100%; }
+    }
+    .btn { width: 20%; }
+    .btn .box { width: 100%; }
+    .input { width: 60%; }
+    .input .box { width: 33.3%; }
+    .chance .box { background: pink; }
+    .tac { text-align: center; }
+    .tar { text-align: right; }
+    .tal { text-align: left; }
+    .chance1 { width: 100%; }
+    .chance1 .box { width: 20%; }
+    .chance2 { width: 20%; clear: left; }
+    .chance2 .box { width: 100%; }
+    .chance-ctn { text-align: center; position: relative; }
+    .chance-item { position: absolute; height: 100%; top: 0; right: 20px; background: pink; }
+    .chance-box { text-align: center; cursor: pointer; }
+    .chance-box.active { background: #c5008e; }
+    .chance-title { text-align: center; background: #efefef; }
+    .res { width: 100%; clear: both; margin-top: 20px; }
+    .res li { width: 100%; border-bottom: 1px solid #ddd; }
+    .res-col { width: 33.3%; height: 24px; line-height: 24px; float: left; }
+    </style>
+</head>
+<body>
+    <div id="app" class="app">
+        <div class="clearfix">
+            <div class="chance chance1">
+                <div class="box chance-box" v-bind:class="{active:now == item.type}"  v-for="(item,index) in f.slice(0,5)" @click=selRes(item.type)>{{item.text}}</div>
+            </div>
+            <div class="chance chance2 fl">
+                <div class="box chance-box" v-bind:class="{active:now == item.type}"  v-for="(item,index) in f.slice(-3)" @click=selRes(item.type)>{{item.text}}</div>
+            </div>
+            <ul class="input fl">
+                <li class="box" v-for="(item,index) in arr">
+                    <input @input=inputChange(event,index) @blur=setDisabled type="tel" v-model.trim="input[index]" />
+                </li>
+            </ul>
+            <div class="btn fl">
+            	<button class="box"></button>
+                <button class="box" @click=resetInput>清空</button>
+                <button class="box" @click=getAll :disabled=disabled>确定</button>
+                <!-- <button class="box" @click=listAll :disabled=disabled>计算</button> -->
+            </div>
+        </div>
+        
+        <ul class="res">
+        	<li class="clearfix">
+        		<div class="res-col tac">概率</div>
+        		<div class="res-col tac">合计</div>
+        		<div class="res-col tar">获得金蝶币</div>
+        	</li>
+        	<template v-for="item in res">
+        		<li v-if="item.title">
+	        		<div v-if="item.title" class="chance-title">{{item.title}}</div>
+	        	<li v-else-if="item.chance" class="clearfix"  v-bind:style="{color: chanceColor(item.reward)}">
+	        		<div class="chance-ctn res-col">
+	        			{{ item.chance }}%
+	        			<div class="chance-item" style="width:{{item.chance+'%'}}"></div>
+	        		</div>
+	        		<div class="res-col tac">{{item.name}}</div>
+	        		<div class="res-col tar">{{item.reward}}</div>
+	        	</li>
+        	</template>
+        </ul>
+    </div>
+    <script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.min.js"></script>
+    <script type="text/javascript">
+    var arr = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+    var k = [];
+    var lists = [];
+
+    function resetInput() {
+        var o = {};
+        for (var i = 1; i <= 9; i++) {
+            o[i] = '';
+        };
+        return o;
+    }
+
+    function factorial(num) {
+        if (num <= 1) {
+            return 1;
+        } else {
+            return num * arguments.callee(num - 1)
+        }
+    }
+
+    function setRes(){
+    	var res = [
+    		{name:6,chance:0,reward:10000},
+    		{name:7,chance:0,reward:36},
+    		{name:8,chance:0,reward:720},
+    		{name:9,chance:0,reward:360},
+    		{name:10,chance:0,reward:60},
+    		{name:11,chance:0,reward:252},
+    		{name:12,chance:0,reward:108},
+    		{name:13,chance:0,reward:72},
+    		{name:14,chance:0,reward:54},
+    		{name:15,chance:0,reward:180},
+    		{name:16,chance:0,reward:72},
+    		{name:17,chance:0,reward:180},
+    		{name:18,chance:0,reward:119},
+    		{name:19,chance:0,reward:36},
+    		{name:20,chance:0,reward:306},
+    		{name:21,chance:0,reward:1080},
+    		{name:22,chance:0,reward:144},
+    		{name:23,chance:0,reward:1800},
+    		{name:24,chance:0,reward:3600}
+    	]
+    	return res;
+    }
+
+    function permute(temArr, testArr) {
+        var permuteArr = [];
+        var arr = testArr;
+
+        function innerPermute(temArr) {
+            for (var i = 0, len = arr.length; i < len; i++) {
+                if (temArr.length == len - 1) {
+                    if (temArr.indexOf(arr[i]) < 0) {
+                        permuteArr.push(temArr.concat(arr[i]));
+                    }
+                    continue;
+                }
+                if (temArr.indexOf(arr[i]) < 0) {
+                    innerPermute(temArr.concat(arr[i]));
+                }
+            }
+        }
+        innerPermute(temArr);
+        return permuteArr;
+    }
+
+    function combineArr(aim,val){
+    	for (var i = 0; i < aim.length; i++) {
+    		if(!aim[i]){
+    			aim[i] = val.shift();
+    		}
+    	}
+    	return aim;
+    }
+
+    var f = [
+    	{type: 1,text: '↘'},
+    	{type: 2,text: '↓'},
+    	{type: 3,text: '↓'},
+    	{type: 4,text: '↓'},
+    	{type: 5,text: '↙'},
+    	{type: 6,text: '→'},
+    	{type: 7,text: '→'},
+    	{type: 8,text: '→'},
+    ];
+
+
+    var app = new Vue({
+        el: '#app',
+        data: {
+            arr: arr,
+            input: [],
+            lists: [],
+            disabled: true,
+            res: setRes(),
+            now: 0,
+            f: f
+        },
+        methods: {
+        	chanceColor: function(value){
+        		return value >= 1000 ? 'red' : value > 200 ? '#cf79ea' : 'gray';
+        	},
+        	setDisabled: function(){
+        		var normal = this.input.filter(function(item) {
+        			return item > 0;
+        		});
+        		this.disabled = normal.length != 4;
+        	},
+            resetInput: function() {
+                this.input = [];
+                this.now = 0;
+                this.res = [];
+            },
+            inputChange: function(ev, index) {
+                var v = +ev.target.value;
+                var input = this.input;
+                if (isNaN(v) || v < 1 || input.indexOf(v) > -1) {
+                    input[index] = '';
+                } else if (v > 9) {
+                    input[index] = +v.toString().charAt(0);
+                }else{
+                	input[index] = +v;
+                }
+                this.setDisabled();
+            },
+            listAll: function() {
+            	var self = this;
+            	var input = this.input;
+            	input.length = 9;
+            	var rest = arr.filter(function(item) {
+            		return self.input.indexOf(item) < 0;
+            	});
+            	var res = permute([],rest);
+            	res = res.map(function(item){
+            		return combineArr(input.slice(),item);
+            	});
+            	this.lists = res;
+            },
+            selRes: function(type){
+            	this.now = type;
+            	this.res = this.calRes(type);
+            },
+            calRes: function(type){
+            	var res = [];
+            	var cal = this.getRes;
+            	if(!this.disabled){
+            		switch (type){
+            			case 1: res = cal(1,5,9);break;
+            			case 2: res = cal(1,4,7);break;
+            			case 3: res = cal(2,5,8);break;
+            			case 4: res = cal(3,6,9);break;
+            			case 5: res = cal(3,5,7);break;
+            			case 6: res = cal(1,2,3);break;
+            			case 7: res = cal(4,5,6);break;
+            			case 8: res = cal(7,8,9);break;
+            		}
+            	}
+            	return res;
+            },
+            getRes: function(p1,p2,p3){
+            	var res = {};
+            	var lists = this.lists;
+            	var l = lists.length;
+            	var item = [];
+            	var sum = 0;
+            	for (var i = 0; i < l; i++) {
+            		item = lists[i];
+            		sum = item[p1 - 1] + item[p2 - 1] + item[p3 - 1];
+            		if(!res[sum]){
+            			res[sum] = 1;
+            		}else{
+            			res[sum]++;
+            		}
+            	}
+            	var nres = setRes();
+            	for (var k = 0; k < nres.length; k++) {
+            		var name = nres[k].name;
+            		if(name in res){
+            			nres[k].chance = res[name]*100/l;
+            		}
+            	}
+            	return nres;
+            },
+            getAll: function(){
+            	this.listAll();
+            	var res = [];
+            	for (var i = 1; i <= 8; i++) {
+            		res = res.concat([{title:i}],this.calRes(i));
+            	}
+            	console.log(res);
+            	this.res = res;
+            }
+        }
+    })
+    </script>
+</body>
+
+</html>
