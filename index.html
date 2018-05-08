@@ -77,7 +77,7 @@
 	        			<div class="chance-item" style="width:{{item.chance+'%'}}"></div>
 	        		</div>
 	        		<div class="res-col tac">{{item.name}}</div>
-	        		<div class="res-col tar">{{item.reward}}</div>
+	        		<div class="res-col tac">{{item.reward}}</div>
 	        	</li>
         	</template>
         </ul>
@@ -271,10 +271,10 @@
             getAll: function(){
             	this.listAll();
             	var res = [];
-            	for (var i = 1; i <= 8; i++) {
-            		res = res.concat([{title:i}],this.calRes(i));
+		var f = this.f;
+            	for (var i = 1; i <= f.length; i++) {
+            		res = res.concat([{title:f.type + ' '+ f.text}],this.calRes(i));
             	}
-            	console.log(res);
             	this.res = res;
             }
         }
