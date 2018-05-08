@@ -272,7 +272,7 @@
             	this.listAll();
             	var res = [];
 		var f = this.f;
-            	for (var i = 1; i <= f.length; i++) {
+            	for (var i = 0; i < f.length; i++) {
             		res = res.concat([{title:f[i].type + ' '+ f[i].text}],this.calRes(f[i].text));
             	}
             	this.res = res;
