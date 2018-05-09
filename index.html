@@ -8,57 +8,78 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <style type="text/css">
     body, div, li, ul, input { margin: 0; padding: 0; box-sizing: border-box; }
+    body{ background:#444;overflow-y: scroll;padding: 20px  0; -webkit-user-select:none; -moz-user-select:none; -ms-user-select:none; user-select:none;}
     ul, li { list-style: none; }
     .fl { float: left; }
     .fr { float: right; }
-    .box { border: 1px solid #000; float: left; height: 50px; line-height: 50px; }
+    .box {  float: left; height: 50px; line-height: 50px; }
     .clearfix:after, .clearfix:before { content: ''; height: 0; width: 100%; display: block; clear: both; overflow: auto; }
-    .input input { display: block; width: 100%; height: 100%; text-align: center; font-size: 16px; }
-    .app { width: 500px; margin: 0 auto; }
+    .app { width: 250px; margin: 0 auto; text-shadow: 1px 1px 1px #000;}
     @media (max-width:768px) {
-        .app { width: 100%; }
+        .app { width: 100%;max-width:280px;}
     }
     .btn { width: 20%; }
-    .btn .box { width: 100%; }
+    .btn .box { width: 100%; background:#487b39;border-radius:10px;color:#eee;font-weight: bold;text-shadow: 0 0 4px #000;font-size: 14px;border:0;cursor: pointer;}
+    .btn .box:focus{ outline:0;}
+    .btn .box:active{ transform: translateY(2px);}
+    .btn .box:disabled{ background:#ddd!important;}
     .input { width: 60%; }
-    .input .box { width: 33.3%; }
-    .chance .box { background: pink; }
+    .input input { display: block; width: 100%; height: 100%; text-align: center; font-size: 16px;border:0;position: relative;z-index:1;background:none;color:#fff;}
+    .input .box { width: 33.3%; position: relative;}
     .tac { text-align: center; }
     .tar { text-align: right; }
     .tal { text-align: left; }
     .chance1 { width: 100%; }
+    .chance .box{ background:#983030;border-radius:10px;color:#f8d870;font-weight: bold;text-shadow: 0 0 4px #000;font-size: 18px;}
+    .chance .box:hover{ border:2px solid #;}
     .chance1 .box { width: 20%; }
     .chance2 { width: 20%; clear: left; }
     .chance2 .box { width: 100%; }
     .chance-ctn { text-align: center; position: relative; }
-    .chance-item { position: absolute; height: 100%; top: 0; right: 20px; background: pink; }
-    .chance-box { text-align: center; cursor: pointer; }
-    .chance-box.active { background: #c5008e; }
-    .chance-title { text-align: center; background: #efefef; }
-    .res { width: 100%; clear: both; margin-top: 20px; }
-    .res li { width: 100%; border-bottom: 1px solid #ddd; }
+    .chance-item { position: absolute; height: 100%; top: 0; right: 20px;}
+    .chance-box { text-align: center; cursor: pointer;position: relative;}
+    .chance-box.active,.btn .box.active { background: #465cc9; }
+    .chance-title { text-align: center; background: #667; }
+    .res { width: 100%; clear: both; margin-top: 20px; color:#8ce;}
+    .res li { width: 100%; border-bottom: 1px solid #777; }
     .res-col { width: 33.3%; height: 24px; line-height: 24px; float: left; }
+    .bg1{ position: relative;}
+    .bg1:hover,.input input:focus{border-radius: 4px;outline: none;box-shadow: 0 0 1px 3px #FFFF77 inset;}
+    .bg1:before {content:'';display:block;position: absolute;left: 0px;top: 1px;width: 100%;height:100%;
+        background-size: 100% 100%;
+        background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACoAAAAtCAYAAADYxvnjAAABS2lUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4KPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgNS42LWMxMzggNzkuMTU5ODI0LCAyMDE2LzA5LzE0LTAxOjA5OjAxICAgICAgICAiPgogPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIi8+CiA8L3JkZjpSREY+CjwveDp4bXBtZXRhPgo8P3hwYWNrZXQgZW5kPSJyIj8+IEmuOgAAAv9JREFUWIXt2c9r02AcgPHnbZM12jk7LBuZ4oZY6LJ1Jz0EYXrwoAdZ2cGDB3/s4EVwkL/Au2x48eJB1IMXMQSGQ8TDhoNexMJwi1qQgqjgip3aTbN2q4e8VZApHuIyIQ+8EEhSPgkJlG/ExMQElmUBYNv2eUVRxuPxeFYIoRFCzWbz2/r6+otGo3FtdHT0NsDQ0BBK6wDHcW709PTke3t7X6XT6UeqqtbDgNbrdbVSqewpl8tXHcc5ks/nLwI+1Lbtc9ls9phhGPeAl0AVaIQBVVVV0XW9U9f17OLi4nHbts8Dt2IAyWRy3DCM+8AcsBQWUtaQhieGYdxPJpOXAYSmaarrug/7+vpuAhshAjcrVi6XL/T395+MASld158BzbBVm9TUdb0IdMaA7kQiscQ2hUpbVwzoAFZDBv0uD3gBdCiACjwGvgD7AR1IhGfDA94Db4B3wEFAVwCB/xK9lUsAnUAa2CPXrn8IWwU+4r/pS3L718dQKL+eJQ/6KFerNmA3/mOSBHYCO/DvvCr3C7ndqi5/a01ue8BXCVsBPsvl/c3VbAbdrDV+XnEo/YBOTk6GZfhjrf8hsZAdf10EDboIGnQRNOgiaNBF0KCLoEEXQYMuggZdBA26CBp0/x1UWJYlQpX8PgESWiwWO9mGd9eyrPj8/HwKJG56enoYf0Sz3doxNTV1FHxoc2Zm5jTQbVmW+ufzti5p6Za2ZlxRlL3Ly8snXNcdHBkZKZqmWTdNc71QKIQy2LUsK26aZhLYOzY2dmVubi7ted4DoWnaIHApnU6fNQzj+fDw8N18Pl8YGBj4xNZPocXCwsJux3HM2dnZM67rDlYqlTvAdaFpWhdwChhrb28/lEql2hKJBLFYOO/WxsYGnudRrVbXVlZWngI3gSkF/5tSAeiu1WqiVqtl8GehrSHvVtbE/3zzCXgFPJC2qsjlcpRKJQ04AJjAYWAf/rA2DOgq/lj8qUS+zmQy30QulwOgVCqp+CPxLvzJshoStI4/if4AVDOZTB3gO4PC63fBsLR3AAAAAElFTkSuQmCC");
+    }
+    .tip{ color:#D8C078;margin-bottom: 20px;border-bottom: 1px solid #fff;padding-bottom: 50px;font-size: 12px;}
+    .tip .tac{padding:10px 0;border-radius:5px;width:80px;float: right;}
     </style>
+    <script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.min.js"></script>
 </head>
 <body>
     <div id="app" class="app">
+        <div class="tip" v-show="tip">
+            <p>箭头：对应行的可能结果</p>
+            <p>重置：清空输入</p>
+            <p>ALL：所有可能结果</p>
+            <p>反馈：lmaomaoz@live.com</p>
+            <div class="tac bg1" @click=closeTip>关闭</div>
+        </div>
         <div class="clearfix">
             <div class="chance chance1">
-                <div class="box chance-box" v-bind:class="{active:now == item.type}"  v-for="(item,index) in f.slice(0,5)" @click=selRes(item.type)>{{item.text}}</div>
+                <div class="box chance-box bg1" v-bind:class="{active:now == item.type}"  v-for="(item,index) in f.slice(0,5)" @click=selRes(item.type)>{{item.type}} {{item.text}}</div>
             </div>
             <div class="chance chance2 fl">
-                <div class="box chance-box" v-bind:class="{active:now == item.type}"  v-for="(item,index) in f.slice(-3)" @click=selRes(item.type)>{{item.text}}</div>
+                <div class="box chance-box bg1" v-bind:class="{active:now == item.type}"  v-for="(item,index) in f.slice(-3)" @click=selRes(item.type)>{{item.type}} {{item.text}}</div>
             </div>
             <ul class="input fl">
-                <li class="box" v-for="(item,index) in arr">
+                <li class="box bg1" v-for="(item,index) in arr">
                     <input @input=inputChange(event,index) @blur=setDisabled type="tel" v-model.trim="input[index]" />
                 </li>
             </ul>
             <div class="btn fl">
-            	<button class="box"></button>
-                <button class="box" @click=resetInput>清空</button>
-                <button class="box" @click=getAll :disabled=disabled>ALL</button>
-                <!-- <button class="box" @click=listAll :disabled=disabled>计算</button> -->
+            	<button class="box bg1" @click=showTip>帮助</button>
+                <button class="box bg1" @click=resetInput>重置</button>
+                <button class="box bg1" v-bind:class="{active: now == 0}" @click=getAll :disabled=disabled>ALL</button>
+                <!-- <button class="box" @click=calAll :disabled=disabled>计算</button> -->
             </div>
         </div>
         
@@ -71,7 +92,7 @@
         	<template v-for="item in res">
         		<li v-if="item.title">
 	        		<div v-if="item.title" class="chance-title">{{item.title}}</div>
-	        	<li v-else-if="item.chance" class="clearfix"  v-bind:style="{color: chanceColor(item.reward)}">
+	        	<li v-else class="clearfix"  v-bind:style="{color: chanceColor(item.reward)}">
 	        		<div class="chance-ctn res-col">
 	        			{{ item.chance }}%
 	        			<div class="chance-item" style="width:{{item.chance+'%'}}"></div>
@@ -82,7 +103,6 @@
         	</template>
         </ul>
     </div>
-    <script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.min.js"></script>
     <script type="text/javascript">
     var arr = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
@@ -181,22 +201,37 @@
             disabled: true,
             res: setRes(),
             now: 0,
-            f: f
+            f: f,
+            tip: false
         },
         methods: {
+            closeTip: function(){
+                this.tip = false;
+            },
+            showTip: function(){
+                this.tip = true;
+            },
         	chanceColor: function(value){
-        		return value >= 1000 ? 'red' : value > 200 ? '#cf79ea' : 'gray';
+        		return value >= 1000 ? 'yellow' : value > 200 ? '#cf79ea' : 'gray';
         	},
         	setDisabled: function(){
         		var normal = this.input.filter(function(item) {
         			return item > 0;
         		});
         		this.disabled = normal.length != 4;
+                if(this.disabled){
+                    this.now = 0;
+                    this.resetRes();
+                }
         	},
+            resetRes: function(){
+                this.lists = [];
+                this.res = setRes();
+            },
             resetInput: function() {
                 this.input = [];
                 this.now = 0;
-                this.res = [];
+                this.resetRes();
             },
             inputChange: function(ev, index) {
                 var v = +ev.target.value;
@@ -209,8 +244,11 @@
                 	input[index] = +v;
                 }
                 this.setDisabled();
+                if(!this.disabled){
+                    this.getAll();
+                }
             },
-            listAll: function() {
+            calAll: function() {
             	var self = this;
             	var input = this.input;
             	input.length = 9;
@@ -224,6 +262,11 @@
             	this.lists = res;
             },
             selRes: function(type){
+                if(!this.disabled){
+                    this.calAll();
+                }else{
+                    return false;
+                }
             	this.now = type;
             	this.res = this.calRes(type);
             },
@@ -259,19 +302,22 @@
             			res[sum]++;
             		}
             	}
+                var arr = [];
             	var nres = setRes();
             	for (var k = 0; k < nres.length; k++) {
             		var name = nres[k].name;
             		if(name in res){
-            			nres[k].chance = res[name]*100/l;
+            			nres[k].chance = (res[name]*100/l).toFixed(0);
+                        arr.push(nres[k]);
             		}
             	}
-            	return nres;
+            	return arr;
             },
             getAll: function(){
-            	this.listAll();
+                this.now = 0;
+            	this.calAll();
             	var res = [];
-		var f = this.f;
+		          var f = this.f;
             	for (var i = 0; i < f.length; i++) {
             		res = res.concat([{title:f[i].type + ' '+ f[i].text}],this.calRes(f[i].type));
             	}
